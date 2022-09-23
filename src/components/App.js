@@ -1,13 +1,33 @@
-import React from "react";
-import SpicyFoodList from "./SpicyFoodList";
+import React, { useState } from "react";
+import { spicyFoods, getNewRandomSpicyFood } from "../data";
 
-function App() {
+function SpicyFoodList() {
+  const [foods, setFoods] = useState(spicyFoods);
+
+  function handleAddFood(){
+    const newFood = getNewRandomSpicyFood();
+
+    const newFoodArray = [...foods, newFood];
+    setFoods(newFoodArray);
+  }
+
+  function handleiClick (id){
+    const newFoodArray = foods.filter (food => food.id !== id);
+    setFoods(newFoodArray);
+  }
+
+  const foodList = foods.map((food) => (
+    <li 
+    key={food.id} onClick = {() => handleiClick(food.id)} > {food.name}| Heat: {food.heatLevel} | Cuisine: {food.cuisine}
+    </li>
+  ))
+
   return (
     <div>
-      <h3>SpicyFoodList</h3>
-      <SpicyFoodList />
+      <button onClick={handleAddFood}>Add New Food</button>
+      <ul>{foodList}</ul>
     </div>
   );
 }
 
-export default App;
+export default SpicyFoodList;
